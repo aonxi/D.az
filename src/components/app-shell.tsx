@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { StageNotice } from "@/src/components/stage-notice";
+import { LogoutButton } from "@/src/features/auth/logout-button";
+import { requireAdminSession } from "@/src/lib/supabase/server";
 
 type NavKey = "inicio" | "solicitudes" | "trabajos" | "cotizaciones" | "mas";
 
@@ -12,7 +14,9 @@ const navItems: { key: NavKey; href: string; label: string; mark: string }[] = [
   { key: "mas", href: "/mas", label: "Más", mark: "M" },
 ];
 
-export function AppShell({ active, eyebrow, title, action, children }: { active: NavKey; eyebrow?: string; title: string; action?: ReactNode; children: ReactNode }) {
+export async function AppShell({ active, eyebrow, title, action, children }: { active: NavKey; eyebrow?: string; title: string; action?: ReactNode; children: ReactNode }) {
+  const admin = await requireAdminSession();
+
   return (
     <div className="site-root">
       <StageNotice />
@@ -22,7 +26,11 @@ export function AppShell({ active, eyebrow, title, action, children }: { active:
           <nav aria-label="Navegación principal">
             {navItems.map((item) => <Link className={item.key === active ? "nav-link active" : "nav-link"} href={item.href} key={item.key}><span aria-hidden="true">{item.mark}</span>{item.label}</Link>)}
           </nav>
-          <div className="demo-identity"><small>Sesión simulada</small><strong>Propietario del taller</strong><Link href="/login">Cerrar demostración</Link></div>
+          <div className="demo-identity">
+            <small>{admin.isDemo ? "Sesión simulada" : admin.email}</small>
+            <strong>{admin.name}</strong>
+            {admin.isDemo ? <Link href="/login">Cerrar demostración</Link> : <LogoutButton />}
+          </div>
         </aside>
         <div className="app-column">
           <header className="topbar">

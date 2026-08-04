@@ -1,6 +1,6 @@
-# TallerFlow — Etapa 1
+# TallerFlow — Etapa 2
 
-Base local y navegable del sistema de gestión para taller. Esta etapa utiliza exclusivamente datos ficticios y no incluye autenticación real, base de datos, almacenamiento ni generación funcional de PDF.
+Base navegable del sistema de gestión para taller con esquema PostgreSQL versionado y autenticación administrativa preparada mediante Supabase. La interfaz continúa utilizando datos ficticios hasta que se conecte deliberadamente un entorno de pruebas.
 
 ## Qué permite revisar
 
@@ -12,8 +12,11 @@ Base local y navegable del sistema de gestión para taller. Esta etapa utiliza e
 - Centro, editor y vista previa de cotizaciones.
 - Clientes, búsqueda, exportaciones futuras y navegación completa.
 - Configuración ficticia del taller en un único archivo.
+- Inicio, cierre y recuperación de acceso para un administrador.
+- Migración inicial con tablas, relaciones, restricciones, folios y RLS cerrada.
+- Pruebas negativas para visitantes y cuentas sin perfil administrativo activo.
 
-Los botones que aparentan guardar, emitir, exportar o cambiar estados son demostrativos. La aplicación muestra permanentemente una advertencia para evitar confundirla con un entorno real.
+Los botones de los módulos que aparentan guardar, emitir, exportar o cambiar estados siguen siendo demostrativos. La persistencia del formulario QR comienza en la Etapa 3.
 
 ## Ejecutar localmente
 
@@ -28,7 +31,8 @@ Abre la dirección local que muestre el proceso de desarrollo. Las rutas inicial
 
 - `/` — panel administrativo.
 - `/solicitud` — formulario público.
-- `/login` — acceso simulado.
+- `/login` — acceso administrativo real al conectar Supabase; demostración en el modo predeterminado.
+- `/recuperar-acceso` — recuperación administrativa sin enumeración de correos.
 - `/trabajos` — cola de órdenes de trabajo.
 - `/cotizaciones/COT-2026-0001` — propuesta visual del documento.
 
@@ -36,26 +40,30 @@ Abre la dirección local que muestre el proceso de desarrollo. Las rutas inicial
 
 ```powershell
 pnpm lint
-pnpm test
+pnpm typecheck
+pnpm test:security
 ```
 
-`pnpm test` compila el proyecto y comprueba que las rutas principales se rendericen con los datos ficticios esperados.
+Las pruebas reales de migración y RLS requieren Supabase CLI y Docker. Las instrucciones completas están en `docs/operations/supabase-etapa-2.md`.
 
 ## Dónde cambiar información
 
 - `src/config/taller.config.ts`: identidad, contacto y valores predeterminados del taller.
 - `src/data/mock-data.ts`: personas, solicitudes, OT y cotizaciones ficticias.
 - `.env.example`: variables locales previstas. No contiene secretos.
+- `supabase/migrations`: esquema PostgreSQL, folios y políticas RLS.
+- `supabase/tests/database`: pruebas de acceso ejecutadas dentro de una transacción reversible.
 
 El logo definitivo se colocará posteriormente como `public/branding/logo.png` y su ruta se mantendrá en la configuración.
 
 ## Límites deliberados
 
 - No usar datos personales o comerciales reales.
-- No existe registro, sesión ni recuperación real.
+- En modo demostración no se crea una sesión real; los flujos se activan únicamente al conectar Supabase de pruebas.
+- El registro público no existe y debe permanecer deshabilitado en Supabase.
 - Ningún formulario persiste información.
-- No se han conectado D1, R2, Supabase ni otro proveedor.
+- No se ha conectado un proyecto Supabase real; la migración está preparada para un entorno de pruebas separado.
 - Los cálculos mostrados son ejemplos; su implementación y pruebas exhaustivas corresponden a la Etapa 6.
 - La emisión, almacenamiento y versionado real del PDF corresponden a la Etapa 7.
 
-No comenzar la Etapa 2 hasta que esta navegación y estructura sean aprobadas.
+No comenzar la Etapa 3 hasta que la migración, el acceso y las pruebas negativas de la Etapa 2 sean revisados y aprobados.

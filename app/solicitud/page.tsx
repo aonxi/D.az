@@ -24,7 +24,7 @@ export default function PublicRequestPage() {
           <label>Observaciones <small>Opcional</small><textarea name="observaciones" rows={3} /></label>
           <label className="check-row"><input name="consentimiento" type="checkbox" required /><span>Autorizo al taller a usar estos datos para revisar y responder mi solicitud.</span></label>
           <button className="button button-primary button-block" type="submit">Enviar solicitud</button>
-          <p className="form-footnote">Este formulario de la Etapa 1 es una demostración: no envía ni almacena información.</p>
+          <p className="form-footnote">Este formulario permanece como demostración hasta la Etapa 3: todavía no envía ni almacena información.</p>
         </form>
       </section>
     </PublicShell>
