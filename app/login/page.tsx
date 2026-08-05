@@ -1,22 +1,20 @@
-import Link from "next/link";
 import type { Metadata } from "next";
 import { PublicShell } from "@/src/components/public-shell";
+import { LoginForm } from "@/src/features/auth/login-form";
+import { hasSupabaseConfig, isDemoMode } from "@/src/lib/supabase/config";
 
 export const metadata: Metadata = { title: "Acceso administrador" };
 
 export default function LoginPage() {
+  const enabled = !isDemoMode() && hasSupabaseConfig();
+
   return (
     <PublicShell>
       <section className="public-card login-card">
         <span className="eyebrow">Administración</span>
         <h1>Acceder a TallerFlow</h1>
-        <p>La autenticación real se implementará en la Etapa 2. Por ahora puedes entrar a la demostración navegable.</p>
-        <form className="form-stack">
-          <label>Correo<input type="email" value="propietario@demo.local" readOnly /></label>
-          <label>Contraseña<input type="password" value="demostracion" readOnly /></label>
-          <Link className="button button-primary button-block" href="/">Entrar a la demostración</Link>
-          <button className="text-button" type="button">Recuperar acceso</button>
-        </form>
+        <p>El registro público está deshabilitado. Solo una cuenta administrativa creada de forma controlada puede acceder.</p>
+        <LoginForm enabled={enabled} />
       </section>
     </PublicShell>
   );
