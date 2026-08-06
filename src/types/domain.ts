@@ -19,11 +19,15 @@ export interface WorkRequest {
   status: RequestStatus;
   clientName: string;
   phone: string;
+  company?: string;
+  rut?: string;
+  email?: string;
   piece: string;
   requestedWork: string;
   requestedDate: string | null;
   submittedAt: string;
   notes?: string;
+  decisionNote?: string;
   possibleClientId?: string;
 }
 

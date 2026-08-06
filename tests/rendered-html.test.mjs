@@ -16,7 +16,6 @@ async function render(pathname = "/") {
 const routes = [
   ["/", /Inicio/],
   ["/solicitud", /Cuéntanos qué trabajo necesitas/],
-  ["/solicitud/confirmacion", /Solicitud recibida/],
   ["/login", /Acceder a TallerFlow/],
   ["/solicitudes", /Entrada desde el QR/],
   ["/solicitudes/SOL-2026-0014", /Datos enviados por el cliente/],
@@ -26,6 +25,7 @@ const routes = [
   ["/cotizaciones/COT-2026-0001", /COTIZACIÓN/],
   ["/clientes", /Datos ficticios/],
   ["/mas", /Exportar trabajos CSV/],
+  ["/mas/qr-solicitud", /QR de solicitud/],
 ];
 
 for (const [pathname, expected] of routes) {
@@ -35,7 +35,7 @@ for (const [pathname, expected] of routes) {
     assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
     const html = await response.text();
     assert.match(html, expected);
-    assert.match(html, /Etapa 2/);
+    assert.match(html, /Etapa 3/);
     assert.match(html, /datos ficticios/i);
     assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/i);
   });
@@ -52,7 +52,7 @@ test("mantiene las decisiones aprobadas en un único archivo", async () => {
   assert.doesNotMatch(config, /password|service_role|secret/i);
 });
 
-test("la Etapa 2 no activa una base de datos de producción", async () => {
+test("la Etapa 3 no activa una base de datos de producción", async () => {
   const hosting = JSON.parse(await readFile(new URL("../.openai/hosting.json", import.meta.url), "utf8"));
   assert.equal(hosting.d1, null);
   assert.equal(hosting.r2, null);
