@@ -13,6 +13,17 @@ export function formatDate(value: string) {
   return new Intl.DateTimeFormat("es-CL", { day: "2-digit", month: "short", year: "numeric", timeZone: "America/Santiago" }).format(new Date(`${value}T12:00:00-04:00`));
 }
 
+export function formatDateTime(value: string) {
+  return new Intl.DateTimeFormat("es-CL", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "America/Santiago",
+  }).format(new Date(value));
+}
+
 const priorityWeight: Record<Priority, number> = { urgente: 4, alta: 3, normal: 2, baja: 1 };
 
 export function sortRecommended(items: WorkOrder[]) {

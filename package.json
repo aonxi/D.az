@@ -12,13 +12,15 @@
     "test": "pnpm run build && node --test --test-isolation=none tests/*.test.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next --ignore-pattern build --ignore-pattern worker",
-    "test:security": "node --test --test-isolation=none tests/stage2-contract.test.mjs",
+    "test:security": "node --experimental-strip-types --test --test-isolation=none tests/stage2-contract.test.mjs tests/stage3-contract.test.mjs tests/stage3-validation.test.mjs",
+    "test:stage3": "node --experimental-strip-types --test --test-isolation=none tests/stage3-contract.test.mjs tests/stage3-validation.test.mjs",
     "test:db": "supabase test db"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.4",
     "@supabase/supabase-js": "^2.112.0",
     "next": "16.2.6",
+    "qrcode.react": "4.2.0",
     "react": "19.2.6",
     "react-dom": "19.2.6"
   },

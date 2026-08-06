@@ -1,12 +1,16 @@
-# TallerFlow — Etapa 2
+# TallerFlow — Etapa 3
 
-Base navegable del sistema de gestión para taller con esquema PostgreSQL versionado y autenticación administrativa preparada mediante Supabase. La interfaz continúa utilizando datos ficticios hasta que se conecte deliberadamente un entorno de pruebas.
+Sistema navegable para taller con esquema PostgreSQL, autenticación administrativa y recepción segura de solicitudes mediante QR. El modo predeterminado continúa usando datos ficticios; la persistencia solo se activa al conectar deliberadamente un proyecto Supabase de pruebas.
 
 ## Qué permite revisar
 
 - Panel responsive para teléfono, tablet y computador.
-- Formulario público y confirmación simulada.
-- Listas y detalles de solicitudes y órdenes de trabajo.
+- Formulario público validado en navegador y servidor.
+- Creación idempotente de solicitudes con folio y confirmación sin IDs internos.
+- Campo trampa, límite de cuerpo y frecuencia configurable sin guardar la IP original.
+- Lista, filtros y detalle administrativo de solicitudes mediante sesión y RLS.
+- QR de prueba descargable como SVG desde `/mas/qr-solicitud`.
+- Listas y detalles simulados de órdenes de trabajo.
 - Registro manual simulado.
 - Cola recomendada con trabajos sin fecha correctamente identificados.
 - Centro, editor y vista previa de cotizaciones.
@@ -16,7 +20,7 @@ Base navegable del sistema de gestión para taller con esquema PostgreSQL versio
 - Migración inicial con tablas, relaciones, restricciones, folios y RLS cerrada.
 - Pruebas negativas para visitantes y cuentas sin perfil administrativo activo.
 
-Los botones de los módulos que aparentan guardar, emitir, exportar o cambiar estados siguen siendo demostrativos. La persistencia del formulario QR comienza en la Etapa 3.
+Los botones de OT, clientes, cotizaciones, exportaciones y decisiones sobre solicitudes siguen siendo demostrativos. Aceptar, cotizar primero, pedir información y rechazar se implementarán transaccionalmente en la Etapa 4.
 
 ## Ejecutar localmente
 
@@ -31,6 +35,8 @@ Abre la dirección local que muestre el proceso de desarrollo. Las rutas inicial
 
 - `/` — panel administrativo.
 - `/solicitud` — formulario público.
+- `/solicitudes` — bandeja administrativa real al conectar Supabase; ficticia en modo demo.
+- `/mas/qr-solicitud` — QR del entorno configurado.
 - `/login` — acceso administrativo real al conectar Supabase; demostración en el modo predeterminado.
 - `/recuperar-acceso` — recuperación administrativa sin enumeración de correos.
 - `/trabajos` — cola de órdenes de trabajo.
@@ -42,9 +48,10 @@ Abre la dirección local que muestre el proceso de desarrollo. Las rutas inicial
 pnpm lint
 pnpm typecheck
 pnpm test:security
+pnpm test:stage3
 ```
 
-Las pruebas reales de migración y RLS requieren Supabase CLI y Docker. Las instrucciones completas están en `docs/operations/supabase-etapa-2.md`.
+Las pruebas reales de migración, RLS e idempotencia requieren Supabase CLI y Docker. La conexión y prueba manual están documentadas en `docs/operations/etapa-3-solicitudes-qr.md`.
 
 ## Dónde cambiar información
 
@@ -53,6 +60,7 @@ Las pruebas reales de migración y RLS requieren Supabase CLI y Docker. Las inst
 - `.env.example`: variables locales previstas. No contiene secretos.
 - `supabase/migrations`: esquema PostgreSQL, folios y políticas RLS.
 - `supabase/tests/database`: pruebas de acceso ejecutadas dentro de una transacción reversible.
+- `src/features/requests`: validación, formulario, QR y consultas administrativas.
 
 El logo definitivo se colocará posteriormente como `public/branding/logo.png` y su ruta se mantendrá en la configuración.
 
@@ -61,9 +69,10 @@ El logo definitivo se colocará posteriormente como `public/branding/logo.png` y
 - No usar datos personales o comerciales reales.
 - En modo demostración no se crea una sesión real; los flujos se activan únicamente al conectar Supabase de pruebas.
 - El registro público no existe y debe permanecer deshabilitado en Supabase.
-- Ningún formulario persiste información.
-- No se ha conectado un proyecto Supabase real; la migración está preparada para un entorno de pruebas separado.
+- El formulario no simula guardados: sin configuración privada devuelve indisponibilidad temporal.
+- No se ha conectado un proyecto Supabase real; las migraciones están preparadas para un entorno de pruebas separado.
+- La dirección IP se usa únicamente para crear un hash HMAC de frecuencia y no se conserva en texto.
 - Los cálculos mostrados son ejemplos; su implementación y pruebas exhaustivas corresponden a la Etapa 6.
 - La emisión, almacenamiento y versionado real del PDF corresponden a la Etapa 7.
 
-No comenzar la Etapa 3 hasta que la migración, el acceso y las pruebas negativas de la Etapa 2 sean revisados y aprobados.
+No comenzar la Etapa 4 hasta que el formulario, el folio, la privacidad pública, la idempotencia y el QR de la Etapa 3 sean probados y aprobados.
