@@ -133,6 +133,13 @@ small { color: var(--muted); }
 .empty-state { display: grid; gap: 0.25rem; border: 1px dashed var(--line); border-radius: var(--radius); background: var(--surface); padding: 1.2rem; text-align: center; }
 
 .form-stack, .form-section { display: grid; gap: 1rem; }
+.choice-group { display: grid; gap: 0.65rem; min-width: 0; margin: 0; border: 0; padding: 0; }
+.choice-group legend { margin-bottom: 0.45rem; font-weight: 700; }
+.choice-card { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: 0.7rem; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-soft); padding: 0.75rem; cursor: pointer; }
+.choice-card:has(input:checked) { border-color: var(--brand); background: var(--brand-soft); }
+.choice-card input { width: 1.2rem; min-height: 1.2rem; margin-top: 0.15rem; }
+.choice-card span { display: grid; gap: 0.15rem; }
+.choice-card small { font-weight: 400; }
 .form-fields { display: grid; gap: 1rem; min-width: 0; margin: 0; border: 0; padding: 0; }
 .form-footnote { margin: 0; color: var(--muted); font-size: 0.82rem; text-align: center; }
 .form-message { margin: 0; border-radius: 10px; background: var(--surface-soft); color: var(--muted); padding: 0.75rem; font-size: 0.86rem; text-align: left; }

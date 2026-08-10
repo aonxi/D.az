@@ -1,7 +1,11 @@
 import vinext from "vinext";
+import { readFileSync } from "node:fs";
 import { defineConfig } from "vite";
-import hostingConfig from "./.openai/hosting.json";
-import { sites } from "./build/sites-vite-plugin";
+import { sites } from "./build/sites-vite-plugin.ts";
+
+const hostingConfig = JSON.parse(
+  readFileSync(new URL("./.openai/hosting.json", import.meta.url), "utf8"),
+) as { d1: string | null; r2: string | null };
 
 const SITE_CREATOR_PLACEHOLDER_DATABASE_ID =
   "00000000-0000-4000-8000-000000000000";

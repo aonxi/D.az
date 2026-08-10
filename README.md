@@ -1,6 +1,6 @@
-# TallerFlow — Etapa 3
+# TallerFlow — Etapa 4
 
-Sistema navegable para taller con esquema PostgreSQL, autenticación administrativa y recepción segura de solicitudes mediante QR. El modo predeterminado continúa usando datos ficticios; la persistencia solo se activa al conectar deliberadamente un proyecto Supabase de pruebas.
+Sistema navegable para taller con esquema PostgreSQL, autenticación administrativa, solicitudes mediante QR y conversión segura a clientes y órdenes de trabajo. El modo predeterminado continúa usando datos ficticios; la persistencia solo se activa al conectar deliberadamente un proyecto Supabase de pruebas.
 
 ## Qué permite revisar
 
@@ -10,8 +10,10 @@ Sistema navegable para taller con esquema PostgreSQL, autenticación administrat
 - Campo trampa, límite de cuerpo y frecuencia configurable sin guardar la IP original.
 - Lista, filtros y detalle administrativo de solicitudes mediante sesión y RLS.
 - QR de prueba descargable como SVG desde `/mas/qr-solicitud`.
-- Listas y detalles simulados de órdenes de trabajo.
-- Registro manual simulado.
+- Resolución explícita de cliente existente o nuevo, sin fusionar coincidencias automáticamente.
+- Conversión transaccional e idempotente de solicitud a una sola OT.
+- Registro manual de OT con prevención de doble envío.
+- Listas y detalles de clientes y órdenes de trabajo conectables a Supabase.
 - Cola recomendada con trabajos sin fecha correctamente identificados.
 - Centro, editor y vista previa de cotizaciones.
 - Clientes, búsqueda, exportaciones futuras y navegación completa.
@@ -20,7 +22,7 @@ Sistema navegable para taller con esquema PostgreSQL, autenticación administrat
 - Migración inicial con tablas, relaciones, restricciones, folios y RLS cerrada.
 - Pruebas negativas para visitantes y cuentas sin perfil administrativo activo.
 
-Los botones de OT, clientes, cotizaciones, exportaciones y decisiones sobre solicitudes siguen siendo demostrativos. Aceptar, cotizar primero, pedir información y rechazar se implementarán transaccionalmente en la Etapa 4.
+En modo demostración, aceptar solicitudes, registrar decisiones y crear OT permite recorrer el flujo, pero no conserva cambios. Cotizaciones, exportaciones y cambios rápidos de la cola continúan siendo demostrativos hasta sus etapas correspondientes.
 
 ## Ejecutar localmente
 
@@ -48,7 +50,7 @@ Abre la dirección local que muestre el proceso de desarrollo. Las rutas inicial
 pnpm lint
 pnpm typecheck
 pnpm test:security
-pnpm test:stage3
+pnpm test:stage4
 ```
 
 Las pruebas reales de migración, RLS e idempotencia requieren Supabase CLI y Docker. La conexión y prueba manual están documentadas en `docs/operations/etapa-3-solicitudes-qr.md`.
@@ -75,4 +77,4 @@ El logo definitivo se colocará posteriormente como `public/branding/logo.png` y
 - Los cálculos mostrados son ejemplos; su implementación y pruebas exhaustivas corresponden a la Etapa 6.
 - La emisión, almacenamiento y versionado real del PDF corresponden a la Etapa 7.
 
-No comenzar la Etapa 4 hasta que el formulario, el folio, la privacidad pública, la idempotencia y el QR de la Etapa 3 sean probados y aprobados.
+No comenzar la Etapa 5 hasta aprobar la resolución de clientes, la conversión solicitud→OT, la OT manual y la protección contra duplicados de la Etapa 4.

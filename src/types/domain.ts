@@ -12,6 +12,7 @@ export interface Client {
   phone: string;
   email?: string;
   address?: string;
+  notes?: string;
 }
 
 export interface WorkRequest {
@@ -44,6 +45,8 @@ export interface WorkOrder {
   priority: Priority;
   status: WorkStatus;
   origin: string;
+  requestFolio?: string;
+  quoteOriginFolio?: string;
   notes?: string;
   manualPosition?: number;
 }

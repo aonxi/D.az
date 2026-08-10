@@ -34,6 +34,7 @@ type RequestRow = {
   fecha_solicitada: string | null;
   observaciones_ingresadas: string | null;
   decision_note: string | null;
+  cliente_id: string | null;
   submitted_at: string;
 };
 
@@ -57,6 +58,7 @@ function mapRequest(row: RequestRow): WorkRequest {
     requestedDate: row.fecha_solicitada,
     notes: row.observaciones_ingresadas ?? undefined,
     decisionNote: row.decision_note ?? undefined,
+    possibleClientId: row.cliente_id ?? undefined,
     submittedAt: row.submitted_at,
   };
 }
@@ -86,7 +88,7 @@ export async function listRequests(filters: RequestFilters): Promise<RepositoryR
   const supabase = await createSupabaseServerClient();
   let query = supabase
     .from("solicitudes")
-    .select("folio,estado,nombre_ingresado,telefono_ingresado,empresa_ingresada,rut_ingresado,correo_ingresado,pieza_ingresada,trabajo_ingresado,fecha_solicitada,observaciones_ingresadas,decision_note,submitted_at")
+    .select("folio,estado,nombre_ingresado,telefono_ingresado,empresa_ingresada,rut_ingresado,correo_ingresado,pieza_ingresada,trabajo_ingresado,fecha_solicitada,observaciones_ingresadas,decision_note,cliente_id,submitted_at")
     .order("submitted_at", { ascending: filters.order === "oldest" })
     .limit(100);
 
@@ -119,7 +121,7 @@ export async function getRequestByFolio(folio: string): Promise<RepositoryResult
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("solicitudes")
-    .select("folio,estado,nombre_ingresado,telefono_ingresado,empresa_ingresada,rut_ingresado,correo_ingresado,pieza_ingresada,trabajo_ingresado,fecha_solicitada,observaciones_ingresadas,decision_note,submitted_at")
+    .select("folio,estado,nombre_ingresado,telefono_ingresado,empresa_ingresada,rut_ingresado,correo_ingresado,pieza_ingresada,trabajo_ingresado,fecha_solicitada,observaciones_ingresadas,decision_note,cliente_id,submitted_at")
     .eq("folio", folio)
     .maybeSingle();
 

@@ -1,0 +1,48 @@
+name: Validar y empaquetar TallerFlow
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Compilar y probar
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Descargar código
+        uses: actions/checkout@v4
+
+      - name: Preparar pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.16.0
+
+      - name: Preparar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile
+
+      - name: Revisar estilo y tipos
+        run: |
+          pnpm lint
+          pnpm typecheck
+
+      - name: Compilar y ejecutar pruebas
+        run: pnpm test
+
+      - name: Guardar compilación para publicación
+        uses: actions/upload-artifact@v4
+        with:
+          name: tallerflow-dist
+          path: dist
+          if-no-files-found: error
+          retention-days: 7

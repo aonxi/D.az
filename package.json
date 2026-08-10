@@ -12,8 +12,9 @@
     "test": "pnpm run build && node --test --test-isolation=none tests/*.test.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next --ignore-pattern build --ignore-pattern worker",
-    "test:security": "node --experimental-strip-types --test --test-isolation=none tests/stage2-contract.test.mjs tests/stage3-contract.test.mjs tests/stage3-validation.test.mjs",
+    "test:security": "node --experimental-strip-types --test --test-isolation=none tests/stage2-contract.test.mjs tests/stage3-contract.test.mjs tests/stage3-validation.test.mjs tests/stage4-contract.test.mjs tests/stage4-validation.test.mjs",
     "test:stage3": "node --experimental-strip-types --test --test-isolation=none tests/stage3-contract.test.mjs tests/stage3-validation.test.mjs",
+    "test:stage4": "node --experimental-strip-types --test --test-isolation=none tests/stage4-contract.test.mjs tests/stage4-validation.test.mjs",
     "test:db": "supabase test db"
   },
   "dependencies": {
